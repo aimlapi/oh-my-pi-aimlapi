@@ -5,6 +5,8 @@ export interface ModelCacheProviderIdOptions {
 
 export function getDefaultModelDiscoveryBaseUrl(providerId: string): string | undefined {
 	switch (providerId) {
+		case "aimlapi":
+			return Bun.env.AIMLAPI_INFERENCE_URL?.trim() || "https://api.aimlapi.com/v1";
 		case "litellm":
 			return Bun.env.LITELLM_BASE_URL ?? "http://localhost:4000/v1";
 		case "opencode-go":
@@ -21,6 +23,12 @@ export function getDefaultModelDiscoveryBaseUrl(providerId: string): string | un
 /** Resolve the cache namespace used by a provider's model-manager options without constructing those options. */
 export function resolveModelCacheProviderId(providerId: string, options: ModelCacheProviderIdOptions = {}): string {
 	switch (providerId) {
+		case "aimlapi": {
+			// Key by base URL so switching AIMLAPI_INFERENCE_URL (e.g. prod ↔ staging)
+			// serves a fresh model list instead of the other environment's cache.
+			const baseUrl = options.baseUrl ?? getDefaultModelDiscoveryBaseUrl(providerId)!;
+			return `aimlapi:${Bun.hash(baseUrl).toString(36)}`;
+		}
 		case "cursor":
 			return "cursor:max-mode-v2";
 		case "litellm": {

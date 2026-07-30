@@ -2,6 +2,17 @@
 
 ## [Unreleased]
 
+### Added
+
+- AIML API model discovery now surfaces per-model **pricing** and **modalities** (via `/v1/models?include=pricing,modalities`), so cost and vision render instead of "Free"/text-only, and populates friendly model names and context/output limits from the catalog.
+- AIML API model list is now **chat (LLM) models only** and ordered with **featured models first**, then the rest, alphabetically within each group.
+
+### Changed
+
+- AIML API model-discovery requests now carry client attribution headers (`X-AIMLAPI-Source`, `X-AIMLAPI-Partner-ID`).
+- AIML API base URL (model discovery + inference) is overridable via the `AIMLAPI_INFERENCE_URL` environment variable (defaults to `https://api.aimlapi.com/v1`); the model cache is keyed by this base URL so switching it serves a fresh model list.
+- `fetchOpenAICompatibleModels` accepts an optional `query` to append parameters to the `/models` request URL.
+
 ## [17.1.8] - 2026-07-28
 
 ### Added

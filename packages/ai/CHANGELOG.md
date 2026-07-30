@@ -2,6 +2,15 @@
 
 ## [Unreleased]
 
+### Added
+
+- Added a "Get API key" device-authorization login for the AIML API provider (RFC 8628): selecting AIML API in `/login` starts a device authorization, opens a browser consent link, and polls until the user approves, then stores the minted API key — no manual key paste required.
+
+### Changed
+
+- AIML API requests now carry client attribution headers (`X-AIMLAPI-Source`, `X-AIMLAPI-Partner-ID`) on inference calls.
+- Moved AIML API to the top of the interactive `/login` provider list, shown as "aimlapi.com (1000+ models, one-click set up)".
+
 ## [17.1.8] - 2026-07-28
 
 ### Fixed
